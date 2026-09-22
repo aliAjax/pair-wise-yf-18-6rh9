@@ -18,17 +18,28 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
 button {
-  min-height: 38px;
+  min-height: 34px;
+  padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: 7px;
   background: #ffffff;
   color: #172033;
   cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .app {
@@ -47,12 +58,16 @@ button {
 }
 
 .hero {
-  min-height: 250px;
   display: grid;
   align-content: center;
-  gap: 14px;
-  padding: 34px;
+  gap: 12px;
+  padding: 26px 34px;
   border-left: 7px solid var(--primary);
+}
+
+.compact-hero {
+  min-height: 0;
+  margin-bottom: 18px;
 }
 
 .hero p,
@@ -68,26 +83,24 @@ button {
 }
 
 .hero h1 {
-  font-size: clamp(34px, 6vw, 62px);
-  line-height: 1;
-  letter-spacing: 0;
+  font-size: clamp(24px, 4vw, 38px);
+  line-height: 1.15;
 }
 
 .hero span {
-  max-width: 860px;
   color: #526071;
-  line-height: 1.75;
+  line-height: 1.7;
 }
 
 .metrics {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-  margin: 18px 0;
+  margin: 0 0 18px;
 }
 
 .metrics article {
-  padding: 18px;
+  padding: 14px 16px;
   border-top: 4px solid var(--secondary);
 }
 
@@ -97,15 +110,8 @@ button {
 
 .metrics strong {
   display: block;
-  margin-top: 10px;
-  font-size: 30px;
-}
-
-.workspace {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 18px;
-  margin-bottom: 18px;
+  margin-top: 6px;
+  font-size: 24px;
 }
 
 .panel {
@@ -113,21 +119,8 @@ button {
 }
 
 .panel h2,
-.panel h3,
-.heading p {
+.panel h3 {
   margin-top: 0;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.chips button {
-  padding: 0 12px;
-  border-color: color-mix(in srgb, var(--primary) 24%, var(--border));
-  background: color-mix(in srgb, var(--primary) 8%, #ffffff);
 }
 
 .heading {
@@ -135,88 +128,455 @@ button {
   align-items: start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .heading h2 {
   margin-bottom: 0;
 }
 
+.heading-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .primary {
   background: var(--primary);
   color: #ffffff;
   border-color: var(--primary);
-  padding: 0 14px;
 }
 
-.field-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+.store-note {
+  margin: 14px 2px 0;
+  color: #94a3b8;
+  font-size: 12px;
 }
 
-label {
-  display: grid;
+/* ---------------- 共用筛选 ---------------- */
+
+.shared-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: #fbfdff;
+  margin-bottom: 16px;
+}
+
+.shared-filter select {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #ffffff;
+}
+
+.shared-filter input {
+  flex: 1 1 220px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-label span {
+.chips button {
+  border-color: color-mix(in srgb, var(--primary) 24%, var(--border));
+  background: color-mix(in srgb, var(--primary) 8%, #ffffff);
+}
+
+.chips button.chip-on {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+/* ---------------- 页签 ---------------- */
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.tabs button {
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  font-weight: 600;
   color: #64748b;
-  font-size: 13px;
 }
 
-input {
-  width: 100%;
-  min-height: 42px;
-  border-radius: 7px;
-  border: 1px solid var(--border);
-  padding: 0 12px;
+.tabs button.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
 }
 
-.records {
+.tab-body {
   display: grid;
-  gap: 12px;
-}
-
-.records article {
-  display: grid;
-  grid-template-columns: 54px 1fr;
   gap: 14px;
+}
+
+/* ---------------- 宝石行 ---------------- */
+
+.stone-row {
+  display: grid;
+  grid-template-columns: minmax(200px, 1.6fr) 76px minmax(130px, 1fr) minmax(110px, 1fr) auto;
   align-items: center;
-  padding: 14px;
+  gap: 10px;
+  padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: #fbfdff;
 }
 
-.records b {
+.stone-row.compact {
+  grid-template-columns: minmax(180px, 2fr) 70px minmax(100px, 1fr) minmax(90px, 1fr) 70px;
+}
+
+.stone-main {
   display: grid;
-  place-items: center;
-  height: 44px;
+  gap: 2px;
+}
+
+.stone-main b {
+  font-size: 14px;
+}
+
+.stone-sub {
+  color: #64748b;
+  font-size: 12.5px;
+}
+
+.defect {
+  color: #b45309;
+  font-size: 12px;
+}
+
+.stone-order,
+.stone-pos {
+  font-size: 13px;
+  color: #334155;
+}
+
+.stone-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.lock-hint {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------------- 标签 ---------------- */
+
+.tag {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.tag-wait {
+  color: #1d4ed8;
+  background: #dbeafe;
+  border-color: #bfdbfe;
+}
+
+.tag-set {
+  color: #0f766e;
+  background: #ccfbf1;
+  border-color: #99f6e4;
+}
+
+.tag-check {
+  color: #7c3aed;
+  background: #ede9fe;
+  border-color: #ddd6fe;
+}
+
+.tag-warn {
+  color: #b45309;
+  background: #fef3c7;
+  border-color: #fde68a;
+}
+
+.tag-repair {
+  color: #be123c;
+  background: #ffe4e6;
+  border-color: #fecdd3;
+}
+
+.tag-done {
+  color: #475569;
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+/* ---------------- 订单 / 批次卡片 ---------------- */
+
+.order-card,
+.batch-card,
+.removal-form,
+.removal-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.card-pad {
+  padding: 16px;
+}
+
+.order-card {
+  padding: 14px 16px;
+}
+
+.stock-card {
+  background: #fcfcfd;
+}
+
+.order-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.order-head h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.order-item {
+  margin-left: 10px;
+  color: #64748b;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.order-head-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.batch-stat {
+  font-weight: 700;
+  color: var(--secondary);
+  font-size: 13px;
+}
+
+.stone-list {
+  display: grid;
+  gap: 8px;
+}
+
+.empty {
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 6px 0;
+}
+
+/* ---------------- 拆镶 ---------------- */
+
+.rule-note {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-left: 3px solid var(--accent);
+  background: #faf5ff;
+  color: #6b21a8;
+  font-size: 12.5px;
+  line-height: 1.6;
+  border-radius: 4px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-row label {
+  display: grid;
+  gap: 6px;
+}
+
+.form-row span {
+  color: #64748b;
+  font-size: 12.5px;
+}
+
+.form-row select,
+.form-row input {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.pick-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.pick-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.pick-item input {
+  width: auto;
+  min-height: 0;
+}
+
+.pick-item.pick-disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+}
+
+.pick-reason {
+  margin-left: auto;
+  color: var(--primary);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.removal-list h3 {
+  margin: 4px 0 2px;
+  font-size: 15px;
+}
+
+.removal-cards {
+  display: grid;
+  gap: 12px;
+}
+
+.removal-items {
+  display: grid;
+  gap: 10px;
+}
+
+.removal-item {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 12px;
+  background: #fcfcfd;
+}
+
+.removal-item-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.inspect-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.inspect-form input {
+  flex: 1 1 180px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.inspect-result {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.inspect-result.readonly {
+  background: #f1f5f9;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.inspect-result.readonly em {
+  font-style: normal;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+/* ---------------- Toast ---------------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  max-width: min(680px, calc(100% - 32px));
+  padding: 12px 18px;
   border-radius: 8px;
   color: #ffffff;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+  cursor: pointer;
+  z-index: 50;
+  line-height: 1.5;
 }
 
-.records h3 {
-  margin-bottom: 6px;
+.toast-ok {
+  background: var(--secondary);
 }
 
-.records p {
-  margin: 0;
-  color: #526071;
-  line-height: 1.6;
+.toast-err {
+  background: var(--primary);
 }
 
 @media (max-width: 860px) {
-  .metrics,
-  .workspace,
-  .field-grid {
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-row {
     grid-template-columns: 1fr;
   }
 
-  .hero {
-    min-height: 210px;
-    padding: 24px;
+  .stone-row,
+  .stone-row.compact {
+    grid-template-columns: 1fr auto;
+  }
+
+  .stone-actions {
+    justify-content: flex-start;
   }
 }
